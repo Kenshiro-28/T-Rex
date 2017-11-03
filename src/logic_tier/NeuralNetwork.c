@@ -11,6 +11,8 @@ typedef struct neuralNetwork
 {
 	int numberOfInputs;
 	NeuronData *inputLayer;
+	NeuronData *neuralLayerInputArray;
+	NeuronData *neuralLayerOutputArray;
 	int numberOfHiddenLayers;
 	NeuralLayer **hiddenLayerArray;
 	int numberOfOutputs;
@@ -117,6 +119,16 @@ NeuralNetworkErrorCode createNeuralNetwork(NeuralNetwork **myNeuralNetwork, int 
 			returnValue = NEURAL_NETWORK_MEMORY_ALLOCATION_ERROR;
 	}
 
+	//Create auxiliary arrays
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		(*myNeuralNetwork)->neuralLayerInputArray = malloc(sizeof(NeuronData)*numberOfInputs);
+		(*myNeuralNetwork)->neuralLayerOutputArray = malloc(sizeof(NeuronData)*numberOfInputs);
+
+		if (((*myNeuralNetwork)->neuralLayerInputArray==NULL) || ((*myNeuralNetwork)->neuralLayerOutputArray==NULL))
+			returnValue = NEURAL_NETWORK_MEMORY_ALLOCATION_ERROR;
+	}
+
 	//Create hidden layer array
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
@@ -176,6 +188,10 @@ NeuralNetworkErrorCode destroyNeuralNetwork(NeuralNetwork **myNeuralNetwork)
 	{
 		//Free input layer
 		free((*myNeuralNetwork)->inputLayer);
+
+		//Free auxiliary arrays
+		free((*myNeuralNetwork)->neuralLayerInputArray);
+		free((*myNeuralNetwork)->neuralLayerOutputArray);
 
 		//Destroy hidden layers
 		while ((i<(*myNeuralNetwork)->numberOfHiddenLayers) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
@@ -295,60 +311,39 @@ NeuralNetworkErrorCode computeNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork
 	int hiddenLayerIndex=0;
 	int neuronsPerHiddenLayer;
 
-	NeuronData *hiddenLayerInputArray;
-	NeuronData *hiddenLayerOutputArray;
-
 	if ((myNeuralNetwork==NULL) || (outputArray==NULL) || (numberOfOutputs==NULL))
 		returnValue = NEURAL_NETWORK_NULL_POINTER_ERROR;
 
-	//Allocate memory for input and output arrays
+	//The first hidden layer input is the input layer
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
 		neuronsPerHiddenLayer = myNeuralNetwork->numberOfInputs;
 
-		int hiddenLayerNeuronDataSize = sizeof(NeuronData)*neuronsPerHiddenLayer;
-
-		hiddenLayerInputArray = malloc(hiddenLayerNeuronDataSize);
-		hiddenLayerOutputArray = malloc(hiddenLayerNeuronDataSize);
-
-		if ((hiddenLayerInputArray==NULL) || (hiddenLayerOutputArray==NULL))
-			returnValue = NEURAL_NETWORK_MEMORY_ALLOCATION_ERROR;
-		else
-		{
-			//The first hidden layer input is the input layer
-			for (int i=0; i<neuronsPerHiddenLayer; i++)
-				hiddenLayerInputArray[i] = myNeuralNetwork->inputLayer[i];
-		}
+		for (int i=0; i<neuronsPerHiddenLayer; i++)
+			myNeuralNetwork->neuralLayerInputArray[i] = myNeuralNetwork->inputLayer[i];
 	}
 
 	//Feed hidden layers
 	while ((hiddenLayerIndex<myNeuralNetwork->numberOfHiddenLayers) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
 	{
-		returnValue = computeNeuralLayerOutput(myNeuralNetwork->hiddenLayerArray[hiddenLayerIndex], hiddenLayerInputArray, neuronsPerHiddenLayer, hiddenLayerOutputArray);
+		returnValue = computeNeuralLayerOutput(myNeuralNetwork->hiddenLayerArray[hiddenLayerIndex], myNeuralNetwork->neuralLayerInputArray, neuronsPerHiddenLayer, myNeuralNetwork->neuralLayerOutputArray);
 
 		//The hidden layer output is the input of the next layer
 		for (int i=0; i<neuronsPerHiddenLayer; i++)
-			hiddenLayerInputArray[i] = hiddenLayerOutputArray[i];
+			myNeuralNetwork->neuralLayerInputArray[i] = myNeuralNetwork->neuralLayerOutputArray[i];
 
 		hiddenLayerIndex++;
 	}
 
 	//Feed output layer
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-		returnValue = computeNeuralLayerOutput(myNeuralNetwork->outputLayer, hiddenLayerInputArray, neuronsPerHiddenLayer, myNeuralNetwork->neuralNetworkOutputArray);
+		returnValue = computeNeuralLayerOutput(myNeuralNetwork->outputLayer, myNeuralNetwork->neuralLayerInputArray, neuronsPerHiddenLayer, myNeuralNetwork->neuralNetworkOutputArray);
 
 	//Get neural network output
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
 		*outputArray = myNeuralNetwork->neuralNetworkOutputArray;
 		*numberOfOutputs = myNeuralNetwork->numberOfOutputs;
-	}
-
-	//Free memory
-	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
-		free(hiddenLayerInputArray);
-		free(hiddenLayerOutputArray);
 	}
 
 	return returnValue;
