@@ -1,30 +1,24 @@
 /*
- ============================================================================
- Name        : T-Rex.c
- Author      : Kenshiro
- Version     :
- Copyright   : 
- Description : Basic example to teach T-Rex the XOR truth table
- ============================================================================
+ * XorExample.c
+ *
+ *  Created on: Nov 5, 2017
+ *      Author: kenshiro
  */
-#include "logic_tier/NeuralNetwork.h"
-#include "presentation_tier/ConsoleManager.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "XorExample.h"
 
 #define NUMBER_OF_INPUTS 2
 #define NUMBER_OF_HIDDEN_LAYERS 1
 #define NUMBER_OF_OUTPUTS 1
 
 #define NUMBER_OF_TEST_CASES 4
-#define TARGET_FITNESS_SCORE 4
+#define TARGET_FITNESS_SCORE NUMBER_OF_TEST_CASES
 
-const NeuronData xorInput[NUMBER_OF_TEST_CASES][NUMBER_OF_INPUTS] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
-const NeuronData xorOutput[NUMBER_OF_TEST_CASES] = {0, 1, 1, 0};
+static const NeuronData xorInput[NUMBER_OF_TEST_CASES][NUMBER_OF_INPUTS] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+static const NeuronData xorOutput[NUMBER_OF_TEST_CASES] = {0, 1, 1, 0};
 
 
-NeuralNetworkErrorCode evaluateFitness(NeuralNetwork *myNeuralNetwork, int *fitnessScore)
+static NeuralNetworkErrorCode evaluateFitness(NeuralNetwork *myNeuralNetwork, int *fitnessScore)
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
@@ -69,7 +63,7 @@ NeuralNetworkErrorCode evaluateFitness(NeuralNetwork *myNeuralNetwork, int *fitn
 	return returnValue;
 }
 
-NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork)
+static NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork)
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
@@ -121,7 +115,7 @@ NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork)
 	return returnValue;
 }
 
-int main(void)
+NeuralNetworkErrorCode runXorExample()
 {
 	printf("\n----- XOR EXAMPLE -----\n");
 
