@@ -1,40 +1,42 @@
 /*
  ============================================================================
- Name        : RunExample.c
+ Name        : T-Rex
  Author      : Kenshiro
- Version     :
- Copyright   :
- Description : Basic examples to learn how to use the T-Rex neural network
+ Version     : 1.00
+ Copyright   : GNU General Public License (GPLv3)
+ Description : T-Rex is an Evolutionary Neural Network
  ============================================================================
  */
 
 #include "examples/XorExample.h"
 #include "examples/TicTacToe.h"
+#include "examples/EightQueensPuzzle.h"
 
-#define SELECTED_EXAMPLE EXAMPLE_TIC_TAC_TOE
+#define SELECTED_EXAMPLE EXAMPLE_EIGHT_QUEENS_PUZZLE
 
 typedef enum
 {
 	EXAMPLE_XOR,
-	EXAMPLE_TIC_TAC_TOE
+	EXAMPLE_TIC_TAC_TOE,
+	EXAMPLE_EIGHT_QUEENS_PUZZLE
 } Example;
-
-const Example selectedExample = SELECTED_EXAMPLE;
 
 int main()
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	switch (selectedExample)
+	switch (SELECTED_EXAMPLE)
 	{
 		case EXAMPLE_XOR:
 			returnValue = runXorExample();
-
 			break;
 
 		case EXAMPLE_TIC_TAC_TOE:
 			returnValue = runTicTacToe();
+			break;
 
+		case EXAMPLE_EIGHT_QUEENS_PUZZLE:
+			returnValue = runEightQueensPuzzle();
 			break;
 	}
 

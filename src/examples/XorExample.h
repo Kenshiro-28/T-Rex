@@ -11,9 +11,6 @@
 #include "../logic_tier/NeuralNetwork.h"
 #include "../presentation_tier/ConsoleManager.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 NeuralNetworkErrorCode runXorExample();
 
 #endif /* EXAMPLES_XOREXAMPLE_H_ */
