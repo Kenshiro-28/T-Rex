@@ -10,8 +10,6 @@ Main features:
 
 ## Network topology
 
-![Feedforward neural network](https://upload.wikimedia.org/wikipedia/commons/c/c2/MultiLayerNeuralNetworkBigger_english.png)
-
 ### Input layer
 
 The input layer has a configurable number of inputs. The input values can be 0 or 1
