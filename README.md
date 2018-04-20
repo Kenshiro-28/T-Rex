@@ -17,7 +17,6 @@ Main features:
 - Configurable number of hidden layers 
 - The number of neurons in each hidden layer is set to be the number of input neurons
 - Configurable number of outputs
-<<<<<<< HEAD
 
 ## Dependencies
 T-Rex uses the GNOME JSON-Glib library to load and save trained neural networks in json files
@@ -39,8 +38,6 @@ $ pkg-config --cflags json-glib-1.0
 
 -pthread -I/usr/include/json-glib-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
 ```
-=======
->>>>>>> b5fe281476125651bde52a1e4fcc1f90f808fe84
 
 ## Quick guide
 
