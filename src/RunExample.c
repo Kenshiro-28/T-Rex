@@ -2,7 +2,7 @@
  ============================================================================
  Name        : T-Rex
  Author      : Kenshiro
- Version     : 1.00
+ Version     : 1.01
  Copyright   : GNU General Public License (GPLv3)
  Description : T-Rex is an Evolutionary Neural Network
  ============================================================================

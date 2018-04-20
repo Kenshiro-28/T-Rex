@@ -25,6 +25,8 @@
  *branch is abandoned and a new evolutionary branch is created from scratch*/
 #define MAXIMUM_NUMBER_OF_GENERATIONS_WITHOUT_IMPROVING_SCORE 1000
 
+#define NEURAL_NETWORK_FILE_NAME "eight_queens_puzzle.json"
+
 typedef enum
 {
 	SQUARE_QUEEN_MARK = 'Q',
@@ -60,7 +62,7 @@ static void printGameBoard(GameBoard *myGameBoard)
 	for (int x=0; x<NUMBER_OF_COLUMNS; x++)
 		printf("----");
 
-	printf("-\n\n");
+	printf("-\n\n\n\n");
 }
 
 static bool isQueenMovement(int sourceX, int sourceY, int destinationX, int destinationY)
@@ -259,12 +261,7 @@ static NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork
 	}
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
-		printGameBoard(&myGameBoard);
-		printf("\nT-Rex wins the game\n\n\n");
-
 		returnValue = destroyNeuralNetwork(&myNeuralNetworkClone);
-	}
 
 	return returnValue;
 }
@@ -273,7 +270,8 @@ NeuralNetworkErrorCode runEightQueensPuzzle()
 {
 	printf("\n----- EIGHT QUEENS PUZZLE -----\n\n");
 
-	NeuralNetwork *myNeuralNetwork;
+	NeuralNetwork *myNeuralNetwork, *myLoadedNeuralNetwork;
+	GameBoard myGameBoard, myLoadedGameBoard;
 
 	NeuralNetworkErrorCode returnValue = createNeuralNetwork(&myNeuralNetwork, NUMBER_OF_INPUTS, NUMBER_OF_HIDDEN_LAYERS, NUMBER_OF_OUTPUTS);
 
@@ -281,7 +279,35 @@ NeuralNetworkErrorCode runEightQueensPuzzle()
 		returnValue = trainNeuralNetwork(&myNeuralNetwork);
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+		returnValue = playEightQueensPuzzle(myNeuralNetwork, &myGameBoard);
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		printf("\n\n\nShowing the output of the trained neural network\n\n");
+		printGameBoard(&myGameBoard);
+		printf("Saving the trained neural network in a json file\n");
+
+		returnValue = saveNeuralNetwork(NEURAL_NETWORK_FILE_NAME, myNeuralNetwork);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		printf("\nLoading the trained neural network from the json file\n");
+		returnValue = loadNeuralNetwork(NEURAL_NETWORK_FILE_NAME, &myLoadedNeuralNetwork);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		printf("\nShowing the output of the neural network loaded from the json file\n\n");
+		returnValue = playEightQueensPuzzle(myLoadedNeuralNetwork, &myLoadedGameBoard);
+		printGameBoard(&myLoadedGameBoard);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 		returnValue = destroyNeuralNetwork(&myNeuralNetwork);
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+		returnValue = destroyNeuralNetwork(&myLoadedNeuralNetwork);
 
 	return returnValue;
 }

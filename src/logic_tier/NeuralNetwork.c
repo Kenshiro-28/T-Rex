@@ -275,15 +275,18 @@ NeuralNetworkErrorCode getHiddenLayer(NeuralNetwork *myNeuralNetwork, int hidden
 	return returnValue;
 }
 
-NeuralNetworkErrorCode getOutputLayer(NeuralNetwork *myNeuralNetwork, NeuralLayer **myOutputLayer)
+NeuralNetworkErrorCode getOutputLayer(NeuralNetwork *myNeuralNetwork, NeuralLayer **myOutputLayer, int *numberOfOutputs)
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	if ((myNeuralNetwork==NULL) || (myOutputLayer==NULL))
+	if ((myNeuralNetwork==NULL) || (myOutputLayer==NULL) || (numberOfOutputs==NULL))
 		returnValue = NEURAL_NETWORK_NULL_POINTER_ERROR;
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
 		*myOutputLayer = myNeuralNetwork->outputLayer;
+		*numberOfOutputs = myNeuralNetwork->numberOfOutputs;
+	}
 
 	return returnValue;
 }

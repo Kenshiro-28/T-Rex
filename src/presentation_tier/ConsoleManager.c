@@ -67,7 +67,9 @@ NeuralNetworkErrorCode printNeuralNetwork(NeuralNetwork *myNeuralNetwork)
 	{
 		NeuralLayer *myOutputLayer;
 
-		returnValue = getOutputLayer(myNeuralNetwork, &myOutputLayer);
+		int dummy;
+
+		returnValue = getOutputLayer(myNeuralNetwork, &myOutputLayer, &dummy);
 
 		if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 		{

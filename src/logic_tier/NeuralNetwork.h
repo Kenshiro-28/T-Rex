@@ -37,9 +37,10 @@ NeuralNetworkErrorCode destroyNeuralNetwork(NeuralNetwork **myNeuralNetwork);
 NeuralNetworkErrorCode getInputLayer(NeuralNetwork *myNeuralNetwork, NeuronData **myInputLayer, int *numberOfInputs);
 NeuralNetworkErrorCode getNumberOfHiddenLayers(NeuralNetwork *myNeuralNetwork, int *numberOfHiddenLayers);
 NeuralNetworkErrorCode getHiddenLayer(NeuralNetwork *myNeuralNetwork, int hiddenLayerNumber, NeuralLayer **myHiddenLayer);
-NeuralNetworkErrorCode getOutputLayer(NeuralNetwork *myNeuralNetwork, NeuralLayer **myOutputLayer);
+NeuralNetworkErrorCode getOutputLayer(NeuralNetwork *myNeuralNetwork, NeuralLayer **myOutputLayer, int *numberOfOutputs);
 NeuralNetworkErrorCode setNeuralNetworkInput(NeuralNetwork *myNeuralNetwork, int inputNumber, NeuronData input);
 NeuralNetworkErrorCode computeNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork, NeuronData **outputArray, int *numberOfOutputs);
+NeuralNetworkErrorCode getNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork, NeuronData **outputArray, int *numberOfOutputs);
 NeuralNetworkErrorCode cloneNeuralNetwork(NeuralNetwork *myNeuralNetwork, NeuralNetwork *myNeuralNetworkClone);
 NeuralNetworkErrorCode mutateNeuralNetwork(NeuralNetwork *myNeuralNetwork);
 

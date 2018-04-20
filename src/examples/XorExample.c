@@ -14,6 +14,8 @@
 #define NUMBER_OF_TEST_CASES 4
 #define TARGET_FITNESS_SCORE NUMBER_OF_TEST_CASES
 
+#define NEURAL_NETWORK_FILE_NAME "xor.json"
+
 static const NeuronData xorInput[NUMBER_OF_TEST_CASES][NUMBER_OF_INPUTS] = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
 static const NeuronData xorOutput[NUMBER_OF_TEST_CASES] = {0, 1, 1, 0};
 
@@ -115,21 +117,14 @@ static NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork
 	return returnValue;
 }
 
-NeuralNetworkErrorCode runXorExample()
+NeuralNetworkErrorCode printNeuralNetworkResults(NeuralNetwork *myNeuralNetwork)
 {
-	printf("\n----- XOR EXAMPLE -----\n");
+	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	NeuralNetwork *myNeuralNetwork;
 	NeuronData *neuralNetworkOutput;
-	int numberOfOutputs;
+
+	int numberOfOutputs = 0;
 	int xorInputIndex = 0;
-
-	NeuralNetworkErrorCode returnValue = createNeuralNetwork(&myNeuralNetwork, NUMBER_OF_INPUTS, NUMBER_OF_HIDDEN_LAYERS, NUMBER_OF_OUTPUTS);
-
-	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-		returnValue = trainNeuralNetwork(&myNeuralNetwork);
-
-	printf("\n\nPrint trained network results ...\n\n");
 
 	//Print trained network results
 	while ((xorInputIndex<NUMBER_OF_TEST_CASES) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
@@ -153,7 +148,54 @@ NeuralNetworkErrorCode runXorExample()
 		xorInputIndex++;
 	}
 
-	returnValue = destroyNeuralNetwork(&myNeuralNetwork);
+	return returnValue;
+}
+
+NeuralNetworkErrorCode runXorExample()
+{
+	printf("\n----- XOR EXAMPLE -----\n");
+
+	NeuralNetwork *myNeuralNetwork;
+	NeuralNetwork *myLoadedNeuralNetwork;
+
+	NeuralNetworkErrorCode returnValue = createNeuralNetwork(&myNeuralNetwork, NUMBER_OF_INPUTS, NUMBER_OF_HIDDEN_LAYERS, NUMBER_OF_OUTPUTS);
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+		returnValue = trainNeuralNetwork(&myNeuralNetwork);
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		printf("\n\n\nShowing the output of the trained neural network\n\n");
+		returnValue = printNeuralNetworkResults(myNeuralNetwork);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		printf("\n\nSaving the trained neural network in a json file\n");
+		returnValue = saveNeuralNetwork(NEURAL_NETWORK_FILE_NAME, myNeuralNetwork);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		printf("\nLoading the trained neural network from the json file\n");
+		returnValue = loadNeuralNetwork(NEURAL_NETWORK_FILE_NAME, &myLoadedNeuralNetwork);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		printf("\nShowing the output of the neural network loaded from the json file\n\n\n");
+		returnValue = printNeuralNetworkResults(myLoadedNeuralNetwork);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		returnValue = destroyNeuralNetwork(&myNeuralNetwork);
+	}
+
+	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
+	{
+		returnValue = destroyNeuralNetwork(&myLoadedNeuralNetwork);
+	}
 
 	return returnValue;
 }

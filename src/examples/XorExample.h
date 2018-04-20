@@ -10,6 +10,7 @@
 
 #include "../logic_tier/NeuralNetwork.h"
 #include "../presentation_tier/ConsoleManager.h"
+#include "../data_tier/DataManager.h"
 
 NeuralNetworkErrorCode runXorExample();
 

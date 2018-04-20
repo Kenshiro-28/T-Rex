@@ -54,3 +54,6 @@ dkms.conf
 # Test files
 Debug/
 Release/
+
+# Json files
+*.json

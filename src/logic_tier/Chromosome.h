@@ -28,7 +28,8 @@ typedef enum
 	CHROMOSOME_RETURN_VALUE_OK = 0,
 	CHROMOSOME_NULL_POINTER_ERROR = -1,
 	CHROMOSOME_MEMORY_ALLOCATION_ERROR = -2,
-	CHROMOSOME_NUMBER_OF_GENES_ERROR = -3
+	CHROMOSOME_NUMBER_OF_GENES_ERROR = -3,
+	CHROMOSOME_INVALID_GENE_ERROR = -4
 } ChromosomeErrorCode;
 
 ChromosomeErrorCode createChromosome(Chromosome **myChromosome, int numberOfGenes);

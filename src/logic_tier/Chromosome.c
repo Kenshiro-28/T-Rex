@@ -107,6 +107,9 @@ ChromosomeErrorCode setGene(Chromosome *myChromosome, int position, Gene myGene)
 	if ((position<0) || (position>=myChromosome->size))
 		returnValue = CHROMOSOME_NUMBER_OF_GENES_ERROR;
 
+	if ((myGene!=GENE_STATE_POSITIVE) && (myGene!=GENE_STATE_NEGATIVE))
+		returnValue = CHROMOSOME_INVALID_GENE_ERROR;
+
 	if (returnValue==CHROMOSOME_RETURN_VALUE_OK)
 		myChromosome->geneArray[position] = myGene;
 
