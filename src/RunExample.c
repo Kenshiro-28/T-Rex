@@ -41,7 +41,7 @@ int main()
 	}
 
 	if (returnValue!=NEURAL_NETWORK_RETURN_VALUE_OK)
-		printf("\n\nERROR RUNNING EXAMPLE: %d\n\n", returnValue);
+		printf("\n\nNEURAL NETWORK ERROR CODE: %d\n\n", returnValue);
 
 	return returnValue;
 }

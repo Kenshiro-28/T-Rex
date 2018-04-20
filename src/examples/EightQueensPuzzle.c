@@ -287,13 +287,26 @@ NeuralNetworkErrorCode runEightQueensPuzzle()
 		printGameBoard(&myGameBoard);
 		printf("Saving the trained neural network in a json file\n");
 
-		returnValue = saveNeuralNetwork(NEURAL_NETWORK_FILE_NAME, myNeuralNetwork);
+		DataManagerErrorCode result = saveNeuralNetwork(NEURAL_NETWORK_FILE_NAME, myNeuralNetwork);
+
+		if (result!=DATA_MANAGER_RETURN_VALUE_OK)
+		{
+			printf("\nError saving neural network\n");
+			exit(0);
+		}
 	}
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
 		printf("\nLoading the trained neural network from the json file\n");
-		returnValue = loadNeuralNetwork(NEURAL_NETWORK_FILE_NAME, &myLoadedNeuralNetwork);
+
+		DataManagerErrorCode result = loadNeuralNetwork(NEURAL_NETWORK_FILE_NAME, &myLoadedNeuralNetwork);
+
+		if (result!=DATA_MANAGER_RETURN_VALUE_OK)
+		{
+			printf("\nError loading neural network\n");
+			exit(0);
+		}
 	}
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
