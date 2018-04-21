@@ -172,27 +172,13 @@ NeuralNetworkErrorCode runXorExample()
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
 		printf("\n\nSaving the trained neural network in a json file\n");
-
-		DataManagerErrorCode result = saveNeuralNetwork(NEURAL_NETWORK_FILE_NAME, myNeuralNetwork);
-
-		if (result!=DATA_MANAGER_RETURN_VALUE_OK)
-		{
-			printf("\nError saving neural network\n");
-			exit(0);
-		}
+		returnValue = saveNeuralNetwork(NEURAL_NETWORK_FILE_NAME, myNeuralNetwork);
 	}
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
 		printf("\nLoading the trained neural network from the json file\n");
-
-		DataManagerErrorCode result = loadNeuralNetwork(NEURAL_NETWORK_FILE_NAME, &myLoadedNeuralNetwork);
-
-		if (result!=DATA_MANAGER_RETURN_VALUE_OK)
-		{
-			printf("\nError loading neural network\n");
-			exit(0);
-		}
+		returnValue = loadNeuralNetwork(NEURAL_NETWORK_FILE_NAME, &myLoadedNeuralNetwork);
 	}
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
@@ -202,14 +188,10 @@ NeuralNetworkErrorCode runXorExample()
 	}
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
 		returnValue = destroyNeuralNetwork(&myNeuralNetwork);
-	}
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
 		returnValue = destroyNeuralNetwork(&myLoadedNeuralNetwork);
-	}
 
 	return returnValue;
 }

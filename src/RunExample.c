@@ -4,7 +4,7 @@
  Author      : Kenshiro
  Version     : 1.01
  Copyright   : GNU General Public License (GPLv3)
- Description : T-Rex is an Evolutionary Neural Network
+ Description : T-Rex is an evolutionary neural network
  ============================================================================
  */
 
