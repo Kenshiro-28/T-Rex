@@ -19,6 +19,7 @@ Main features:
 - Configurable number of outputs
 
 ## Dependencies
+
 T-Rex uses the GNOME JSON-Glib library to load and save trained neural networks in json files
 
 https://wiki.gnome.org/Projects/JsonGlib
@@ -29,7 +30,7 @@ To install JSON-Glib in Ubuntu run this command:
 sudo apt install libjson-glib-dev
 ```
 
-To get the required libraries run this command and add the libraries without `-l` to your Eclipse Project:
+To add the libraries to your project, run this command and add the names of the libraries without `-l` to your Eclipse Project:
 
 ```
 $ pkg-config --libs json-glib-1.0 
@@ -37,7 +38,7 @@ $ pkg-config --libs json-glib-1.0
 -ljson-glib-1.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
 ```
 
-To get the include paths run this command and add the include paths without `-I` to your Eclipse Project:
+To add the include paths to your project, run this command and add the include paths without `-I` to your Eclipse Project:
 
 ```
 $ pkg-config --cflags json-glib-1.0
