@@ -50,5 +50,5 @@ $ pkg-config --cflags json-glib-1.0
 - Download Eclipse IDE for C/C++ Developers: https://www.eclipse.org/cdt/
 - Download this repository and create a new C Project in the project root folder
 - Add the JSON-Glib dependencies to your project
-- Edit the file **RunExample.c** and save the name of the selected example in the **SELECTED_EXAMPLE** macro
+- Edit the file **RunExample.c** and set the name of the selected example in the **SELECTED_EXAMPLE** macro
 - Compile and run the project
