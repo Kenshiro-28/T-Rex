@@ -1,6 +1,6 @@
 # T-Rex
 
-T-Rex is an Evolutionary Neural Network. It learns by adjusting the strength of the connection weights by mutation and selection. The programmer must define the problem to solve with a scoring system so that T-Rex can evolve gradually until finding the optimal solution.
+T-Rex is an evolutionary neural network. It learns by adjusting the strength of the connection weights by mutation and selection. The programmer must define the problem to solve with a scoring system so that T-Rex can evolve gradually until finding the optimal solution.
 
 Main features:
 
@@ -24,10 +24,10 @@ T-Rex uses the GNOME JSON-Glib library to load and save trained neural networks 
 
 https://wiki.gnome.org/Projects/JsonGlib
 
-To install JSON-Glib in Ubuntu, run this command:
+To install JSON-Glib in Ubuntu, open a system console and run this command:
 
 ```
-sudo apt install libjson-glib-dev
+$ sudo apt install libjson-glib-dev
 ```
 
 Then, run this command and add the names of the libraries without `-l` to your Eclipse Project:
