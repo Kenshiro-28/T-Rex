@@ -18,7 +18,7 @@ Main features:
 - The number of neurons in each hidden layer is set to be the number of input neurons
 - Configurable number of outputs
 
-## Building
+## Installing dependencies
 
 T-Rex uses the GNOME JSON-Glib library to load trained neural networks from json files:
 
@@ -30,11 +30,11 @@ To install JSON-Glib in Ubuntu, open a system console and run this command:
 $ sudo apt install libjson-glib-dev
 ```
 
-### Compiling the included examples
+## Building the included examples
 
 Edit the file **RunExample.c** and set the name of the selected example in the **SELECTED_EXAMPLE** macro.
 
-Run this command to compile the binary file:
+Run this command to build the binary file:
 
 ```
 $ make
@@ -52,9 +52,9 @@ Run this command to delete the generated files:
 $ make clean
 ```
 
-### Compiling a shared library
+## Building a shared library
 
-Run this command to compile a shared library in the current folder:
+Run this command to build a shared library in the current folder:
 
 ```
 $ make library=true
