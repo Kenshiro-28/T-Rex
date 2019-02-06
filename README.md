@@ -18,9 +18,9 @@ Main features:
 - The number of neurons in each hidden layer is set to be the number of input neurons
 - Configurable number of outputs
 
-## Dependencies
+## Building
 
-T-Rex uses the GNOME JSON-Glib library to load and save trained neural networks in json files:
+T-Rex uses the GNOME JSON-Glib library to load trained neural networks from json files:
 
 https://wiki.gnome.org/Projects/JsonGlib
 
@@ -30,26 +30,39 @@ To install JSON-Glib in Ubuntu, open a system console and run this command:
 $ sudo apt install libjson-glib-dev
 ```
 
-Then, run this command and add the names of the libraries without `-l` to your Eclipse Project:
+### Compiling the included examples
+
+Edit the file **RunExample.c** and set the name of the selected example in the **SELECTED_EXAMPLE** macro
+
+Run this command to compile the binary file:
 
 ```
-$ pkg-config --libs json-glib-1.0 
-
--ljson-glib-1.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0
+$ make
 ```
 
-Finally, run this command and add the include paths without `-I` to your Eclipse Project:
+Run this command to start the selected example:
 
 ```
-$ pkg-config --cflags json-glib-1.0
-
--pthread -I/usr/include/json-glib-1.0 -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+$ ./runExample
 ```
 
-## Quick guide
+Run this command to delete the generated files:
 
-- Download Eclipse IDE for C/C++ Developers: https://www.eclipse.org/cdt/
-- Create a new C Project in the root folder of the repository
-- Add the JSON-Glib dependencies to your project
-- Edit the file **RunExample.c** and set the name of the selected example in the **SELECTED_EXAMPLE** macro
-- Compile and run the project
+```
+$ make clean
+```
+
+### Compiling a shared library
+
+Run this command to compile a shared library in the current folder:
+
+```
+$ make library=true
+```
+
+Run this command to delete the generated files:
+
+```
+$ make library=true clean
+```
+
