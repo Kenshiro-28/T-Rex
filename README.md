@@ -32,7 +32,7 @@ $ sudo apt install libjson-glib-dev
 
 ### Compiling the included examples
 
-Edit the file **RunExample.c** and set the name of the selected example in the **SELECTED_EXAMPLE** macro
+Edit the file **RunExample.c** and set the name of the selected example in the **SELECTED_EXAMPLE** macro.
 
 Run this command to compile the binary file:
 
