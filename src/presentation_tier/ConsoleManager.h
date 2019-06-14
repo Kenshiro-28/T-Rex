@@ -13,6 +13,6 @@
 
 NeuralNetworkErrorCode printNeuralNetwork(NeuralNetwork *myNeuralNetwork);
 NeuronErrorCode printNeuralLayer(NeuralLayer *myNeuralLayer);
-ChromosomeErrorCode printChromosome(Chromosome *myChromosome);
+NeuronErrorCode printNeuron(Neuron *myNeuron);
 
 #endif /* SRC_PRESENTATION_TIER_CONSOLEMANAGER_H_ */

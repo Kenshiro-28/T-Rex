@@ -46,12 +46,6 @@ Run this command to start the selected example:
 $ ./runExample
 ```
 
-Run this command to delete the generated files:
-
-```
-$ make clean
-```
-
 ## Building a shared library
 
 Run this command to build a shared library in the current folder:
@@ -60,9 +54,11 @@ Run this command to build a shared library in the current folder:
 $ make library=true
 ```
 
+# Cleaning
+
 Run this command to delete the generated files:
 
 ```
-$ make library=true clean
+$ make clean
 ```
 

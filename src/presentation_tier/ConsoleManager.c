@@ -108,37 +108,29 @@ NeuralNetworkErrorCode printNeuralNetwork(NeuralNetwork *myNeuralNetwork)
 NeuronErrorCode printNeuralLayer(NeuralLayer *myNeuralLayer)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
+
 	int numberOfNeurons;
 	int i=0;
 
 	if (myNeuralLayer==NULL)
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	returnValue = getNumberOfNeurons(myNeuralLayer, &numberOfNeurons);
+	else
+		returnValue = getNumberOfNeurons(myNeuralLayer, &numberOfNeurons);
 
 	while ((i<numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
 	{
 		Neuron *myNeuron;
-		Chromosome *myChromosome;
-
-		ChromosomeErrorCode result;
-
+		
 		returnValue = getNeuron(myNeuralLayer, i, &myNeuron);
-
-		if (returnValue==NEURON_RETURN_VALUE_OK)
-			returnValue = getNeuronChromosome(myNeuron, &myChromosome);
 
 		if (returnValue==NEURON_RETURN_VALUE_OK)
 		{
 			printf("N%d: ", i);
 
-			result = printChromosome(myChromosome);
+			returnValue = printNeuron(myNeuron);
 
 			if (i<numberOfNeurons-1)
 				printf(", ");
-
-			if (result!=CHROMOSOME_RETURN_VALUE_OK)
-				returnValue = NEURON_CHROMOSOME_ERROR;
 		}
 
 		i++;
@@ -149,30 +141,31 @@ NeuronErrorCode printNeuralLayer(NeuralLayer *myNeuralLayer)
 	return returnValue;
 }
 
-ChromosomeErrorCode printChromosome(Chromosome *myChromosome)
+NeuronErrorCode printNeuron(Neuron *myNeuron)
 {
-	ChromosomeErrorCode returnValue = CHROMOSOME_RETURN_VALUE_OK;
-	Gene myGene;
-	int numberOfGenes;
+	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
+
+	NeuronWeight myWeight;
+	int numberOfWeights = 0;
 	int i=0;
 
-	if (myChromosome==NULL)
-		returnValue = CHROMOSOME_NULL_POINTER_ERROR;
+	if (myNeuron==NULL)
+		returnValue = NEURON_NULL_POINTER_ERROR;
 	else
-		returnValue = getNumberOfGenes(myChromosome, &numberOfGenes);
+		returnValue = getNumberOfInputs(myNeuron, &numberOfWeights);
 
 	printf("|");
 
-	while ((i<numberOfGenes) && (returnValue==CHROMOSOME_RETURN_VALUE_OK))
+	while ((i<numberOfWeights) && (returnValue==NEURON_RETURN_VALUE_OK))
 	{
-		returnValue = getGene(myChromosome, i, &myGene);
+		returnValue = getNeuronWeight(myNeuron, i, &myWeight);
 
-		if (returnValue==CHROMOSOME_RETURN_VALUE_OK)
+		if (returnValue==NEURON_RETURN_VALUE_OK)
 		{
-			if (myGene==GENE_STATE_NEGATIVE)
-				printf("%d |", myGene);
+			if (myWeight==NEURON_WEIGHT_NEGATIVE)
+				printf("%d |", myWeight);
 			else
-				printf(" %d |", myGene);
+				printf(" %d |", myWeight);
 		}
 
 		i++;

@@ -18,25 +18,16 @@ static NeuralNetworkErrorCode addNeuronWeights(Neuron *myNeuron, int numberOfInp
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	Chromosome *myChromosome;
-	Gene myWeight;
+	NeuronWeight myWeight;
 
-	int numberOfGenes;
+	int numberOfWeights = 0;
 	int inputNumber = 0;
 
-	NeuronErrorCode myNeuronErrorCode = getNeuronChromosome(myNeuron, &myChromosome);
+	NeuronErrorCode myNeuronErrorCode = getNumberOfInputs(myNeuron, &numberOfWeights);
 
-	if (myNeuronErrorCode!=NEURON_RETURN_VALUE_OK)
+	if ((myNeuronErrorCode!=NEURON_RETURN_VALUE_OK) || (numberOfWeights!=numberOfInputs))
 		returnValue = NEURAL_NETWORK_NEURON_ERROR;
-
-	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
-		ChromosomeErrorCode myChromosomeErrorCode = getNumberOfGenes(myChromosome, &numberOfGenes);
-
-		if ((myChromosomeErrorCode!=CHROMOSOME_RETURN_VALUE_OK) || (numberOfGenes!=numberOfInputs))
-			returnValue = NEURAL_NETWORK_NEURON_ERROR;
-	}
-
+	
 	//Begin weight array
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{

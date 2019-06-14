@@ -11,7 +11,7 @@ typedef struct neuron
 {
 	int numberOfInputs;
 	NeuronData *inputArray;
-	Chromosome *weightData;
+	NeuronWeight *weightArray;
 } Neuron;
 
 typedef struct neuronArray
@@ -20,44 +20,42 @@ typedef struct neuronArray
 	Neuron **neuronArray;
 } NeuronArray;
 
-
 //Neuron operations
 
 NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
-	Chromosome *myChromosome = NULL;
-
+	
 	if (myNeuron==NULL)
 		returnValue = NEURON_NULL_POINTER_ERROR;
 
 	if ((numberOfInputs<NEURON_MINIMUM_NUMBER_OF_INPUTS) || (numberOfInputs>INT_MAX))
 		returnValue = NEURON_NUMBER_OF_INPUTS_ERROR;
 
-	//Create chromosome
-	if (returnValue==NEURON_RETURN_VALUE_OK)
-	{
-		ChromosomeErrorCode result = createChromosome(&myChromosome, numberOfInputs);
-
-		if (result!=CHROMOSOME_RETURN_VALUE_OK)
-			returnValue = NEURON_CHROMOSOME_ERROR;
-	}
-
 	//Create neuron
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
 		*myNeuron = malloc(sizeof(Neuron));
 
-		if (*myNeuron==NULL)
+		if (myNeuron==NULL)
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
 	}
 
 	//Create input array
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
-		(*myNeuron)->inputArray = malloc(sizeof(NeuronData)*numberOfInputs);
+		(*myNeuron)->inputArray = malloc(sizeof(NeuronData) * numberOfInputs);
 
 		if ((*myNeuron)->inputArray==NULL)
+			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
+	}
+
+	//Create weight array
+	if (returnValue==NEURON_RETURN_VALUE_OK)
+	{
+		(*myNeuron)->weightArray = malloc(sizeof(NeuronWeight) * numberOfInputs);
+
+		if ((*myNeuron)->weightArray==NULL)
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
 	}
 
@@ -67,9 +65,16 @@ NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs)
 		(*myNeuron)->numberOfInputs = numberOfInputs;
 
 		for (int i=0; i<numberOfInputs; i++)
+		{
+			int randomWeight = rand() % 2;
+
 			(*myNeuron)->inputArray[i] = NEURON_DATA_ZERO;
 
-		(*myNeuron)->weightData = myChromosome;
+			if (randomWeight)
+				(*myNeuron)->weightArray[i] = NEURON_WEIGHT_POSITIVE;
+			else
+				(*myNeuron)->weightArray[i] = NEURON_WEIGHT_NEGATIVE;
+		}
 	}
 
 	return returnValue;
@@ -85,10 +90,23 @@ NeuronErrorCode destroyNeuron(Neuron **myNeuron)
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
 		free((*myNeuron)->inputArray);
-		free((*myNeuron)->weightData);
+		free((*myNeuron)->weightArray);
 		free(*myNeuron);
 		*myNeuron = NULL;
 	}
+
+	return returnValue;
+}
+
+NeuronErrorCode getNumberOfInputs(Neuron *myNeuron, int *numberOfInputs)
+{
+	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
+
+	if ((myNeuron==NULL) || (numberOfInputs==NULL))
+		returnValue = NEURON_NULL_POINTER_ERROR;
+
+	if (returnValue==NEURON_RETURN_VALUE_OK)
+		*numberOfInputs = myNeuron->numberOfInputs;
 
 	return returnValue;
 }
@@ -99,67 +117,41 @@ NeuronErrorCode setNeuronInput(Neuron *myNeuron, int inputNumber, NeuronData inp
 
 	if (myNeuron==NULL)
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if ((inputNumber<0) || (inputNumber>=myNeuron->numberOfInputs))
+	else if ((inputNumber < 0) || (inputNumber >= myNeuron->numberOfInputs))
 		returnValue = NEURON_NUMBER_OF_INPUTS_ERROR;
-
+	
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 		myNeuron->inputArray[inputNumber] = inputValue;
 
 	return returnValue;
 }
 
-NeuronErrorCode getNeuronChromosome(Neuron *myNeuron, Chromosome **myChromosome)
-{
-	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
-
-	if ((myNeuron==NULL) || (myChromosome==NULL))
-		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if (returnValue==NEURON_RETURN_VALUE_OK)
-		*myChromosome = myNeuron->weightData;
-
-	return returnValue;
-}
-
-NeuronErrorCode getNeuronWeight(Neuron *myNeuron, int inputNumber, Gene *inputWeight)
+NeuronErrorCode getNeuronWeight(Neuron *myNeuron, int inputNumber, NeuronWeight *inputWeight)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
 	if ((myNeuron==NULL) || (inputWeight==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if ((inputNumber<0) || (inputNumber>=myNeuron->numberOfInputs))
+	else if ((inputNumber < 0) || (inputNumber >= myNeuron->numberOfInputs))
 		returnValue = NEURON_NUMBER_OF_INPUTS_ERROR;
-
+	
 	if (returnValue==NEURON_RETURN_VALUE_OK)
-	{
-		ChromosomeErrorCode result = getGene(myNeuron->weightData, inputNumber, inputWeight);
-
-		if (result!=CHROMOSOME_RETURN_VALUE_OK)
-			returnValue = NEURON_CHROMOSOME_ERROR;
-	}
+		*inputWeight = myNeuron->weightArray[inputNumber];
 
 	return returnValue;
 }
 
-NeuronErrorCode setNeuronWeight(Neuron *myNeuron, int inputNumber, Gene inputWeight)
+NeuronErrorCode setNeuronWeight(Neuron *myNeuron, int inputNumber, NeuronWeight inputWeight)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
 	if (myNeuron==NULL)
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if ((inputNumber<0) || (inputNumber>=myNeuron->numberOfInputs))
+	else if ((inputNumber < 0) || (inputNumber >= myNeuron->numberOfInputs))
 		returnValue = NEURON_NUMBER_OF_INPUTS_ERROR;
 
 	if (returnValue==NEURON_RETURN_VALUE_OK)
-	{
-		ChromosomeErrorCode result = setGene(myNeuron->weightData, inputNumber, inputWeight);
-
-		if (result!=CHROMOSOME_RETURN_VALUE_OK)
-			returnValue = NEURON_CHROMOSOME_ERROR;
-	}
+		myNeuron->weightArray[inputNumber] = inputWeight;
 
 	return returnValue;
 }
@@ -173,33 +165,15 @@ NeuronErrorCode computeNeuronOutput(Neuron *myNeuron, NeuronData *neuronOutput)
 
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
-		ChromosomeErrorCode result = CHROMOSOME_RETURN_VALUE_OK;
 		int inputSum = 0;
-		Gene inputWeight;
-		int i=0;
 
-		while ((i<myNeuron->numberOfInputs) && (result==CHROMOSOME_RETURN_VALUE_OK))
-		{
-			result = getGene(myNeuron->weightData, i, &inputWeight);
-
-			if (result==CHROMOSOME_RETURN_VALUE_OK)
-			{
-				NeuronData neuronInput = myNeuron->inputArray[i];
-				inputSum = inputSum + neuronInput*inputWeight;
-			}
-
-			i++;
-		}
-
-		if (result==CHROMOSOME_RETURN_VALUE_OK)
-		{
-			if (inputSum>0)
-				*neuronOutput = NEURON_DATA_ONE;
-			else
-				*neuronOutput = NEURON_DATA_ZERO;
-		}
+		for (int i=0; i < myNeuron->numberOfInputs; i++)
+			inputSum = inputSum + myNeuron->inputArray[i] * myNeuron->weightArray[i];
+		
+		if (inputSum>0)
+			*neuronOutput = NEURON_DATA_ONE;
 		else
-			returnValue = NEURON_CHROMOSOME_ERROR;
+			*neuronOutput = NEURON_DATA_ZERO;
 	}
 
 	return returnValue;
@@ -210,20 +184,16 @@ NeuronErrorCode cloneNeuron(Neuron *myNeuron, Neuron *myNeuronClone)
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
 	int i=0;
-	int numberOfWeights;
 
 	if ((myNeuron==NULL) || (myNeuronClone==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if (myNeuron->numberOfInputs!=myNeuronClone->numberOfInputs)
+	else if (myNeuron->numberOfInputs != myNeuronClone->numberOfInputs)
 		returnValue = NEURON_DIFFERENT_NEURONS_ERROR;
-	else
-		numberOfWeights = myNeuron->numberOfInputs;
 
 	//Copy weights
-	while ((i<numberOfWeights) && (returnValue==NEURON_RETURN_VALUE_OK))
+	while ((i < myNeuron->numberOfInputs) && (returnValue==NEURON_RETURN_VALUE_OK))
 	{
-		Gene neuronWeight;
+		NeuronWeight neuronWeight;
 
 		returnValue = getNeuronWeight(myNeuron, i, &neuronWeight);
 
@@ -245,10 +215,18 @@ NeuronErrorCode mutateNeuron(Neuron *myNeuron)
 
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
-		ChromosomeErrorCode result = mutateChromosome(myNeuron->weightData);
+		//Calculate a random number of mutations
+		int numberOfMutations = (rand() % myNeuron->numberOfInputs) + 1;
 
-		if (result!=CHROMOSOME_RETURN_VALUE_OK)
-			returnValue = NEURON_CHROMOSOME_ERROR;
+		for (int i=0; i < numberOfMutations; i++)
+		{
+			int randomWeight = rand() % myNeuron->numberOfInputs;
+
+			if (myNeuron->weightArray[randomWeight] == NEURON_WEIGHT_NEGATIVE)
+				myNeuron->weightArray[randomWeight] = NEURON_WEIGHT_POSITIVE;
+			else
+				myNeuron->weightArray[randomWeight] = NEURON_WEIGHT_NEGATIVE;
+		}
 	}
 
 	return returnValue;
@@ -274,7 +252,7 @@ NeuronErrorCode createNeuronArray(NeuronArray **myNeuronArray, int numberOfInput
 	//Create neuron array structure
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
-		*myNeuronArray = malloc(sizeof(NeuronArray));
+		*myNeuronArray = (NeuronArray*) malloc(sizeof(NeuronArray));
 
 		if (*myNeuronArray==NULL)
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
@@ -283,7 +261,7 @@ NeuronErrorCode createNeuronArray(NeuronArray **myNeuronArray, int numberOfInput
 	//Create neuron array
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
-		(*myNeuronArray)->neuronArray = malloc(sizeof(Neuron*)*numberOfNeurons);
+		(*myNeuronArray)->neuronArray = (Neuron**) malloc(sizeof(Neuron*)*numberOfNeurons);
 
 		if ((*myNeuronArray)->neuronArray==NULL)
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
@@ -357,8 +335,7 @@ NeuronErrorCode getNeuron(NeuronArray *myNeuronArray, int neuronNumber, Neuron *
 
 	if ((myNeuronArray==NULL) || (myNeuron==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if ((neuronNumber<0) || (neuronNumber>=myNeuronArray->numberOfNeurons))
+	else if ((neuronNumber<0) || (neuronNumber>=myNeuronArray->numberOfNeurons))
 		returnValue = NEURON_NUMBER_OF_NEURONS_ERROR ;
 
 	if (returnValue==NEURON_RETURN_VALUE_OK)
@@ -376,8 +353,7 @@ NeuronErrorCode cloneNeuronArray(NeuronArray *myNeuronArray, NeuronArray *myNeur
 
 	if ((myNeuronArray==NULL) || (myNeuronArrayClone==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if (myNeuronArray->numberOfNeurons!=myNeuronArrayClone->numberOfNeurons)
+	else if (myNeuronArray->numberOfNeurons!=myNeuronArrayClone->numberOfNeurons)
 		returnValue = NEURON_DIFFERENT_NEURON_ARRAYS_ERROR;
 	else
 		numberOfNeurons = myNeuronArray->numberOfNeurons;
@@ -405,35 +381,33 @@ NeuronErrorCode mutateNeuronArray(NeuronArray *myNeuronArray, bool isMassiveMuta
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
 	Neuron *mutantNeuron;
+
 	int numberOfNeurons;
 
 	if (myNeuronArray==NULL)
 		returnValue = NEURON_NULL_POINTER_ERROR;
-
-	if (returnValue==NEURON_RETURN_VALUE_OK)
-	{
+	else
 		numberOfNeurons = myNeuronArray->numberOfNeurons;
+	
+	if ((isMassiveMutation) && (returnValue==NEURON_RETURN_VALUE_OK))
+	{
+		int i=0;
 
-		if (isMassiveMutation)
+		while ((i<numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
 		{
-			int i=0;
-
-			while ((i<numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
-			{
-				mutantNeuron = myNeuronArray->neuronArray[i];
-				returnValue = mutateNeuron(mutantNeuron);
-
-				i++;
-			}
-		}
-		else
-		{
-			int mutantNeuronIndex = rand() % numberOfNeurons;
-			mutantNeuron = myNeuronArray->neuronArray[mutantNeuronIndex];
-
+			mutantNeuron = myNeuronArray->neuronArray[i];
 			returnValue = mutateNeuron(mutantNeuron);
+
+			i++;
 		}
 	}
+	else if ((!isMassiveMutation) && (returnValue==NEURON_RETURN_VALUE_OK))
+	{
+		int mutantNeuronIndex = rand() % numberOfNeurons;
+		mutantNeuron = myNeuronArray->neuronArray[mutantNeuronIndex];
 
+		returnValue = mutateNeuron(mutantNeuron);
+	}
+	
 	return returnValue;
 }
