@@ -252,7 +252,7 @@ NeuronErrorCode createNeuronArray(NeuronArray **myNeuronArray, int numberOfInput
 	//Create neuron array structure
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
-		*myNeuronArray = (NeuronArray*) malloc(sizeof(NeuronArray));
+		*myNeuronArray = malloc(sizeof(NeuronArray));
 
 		if (*myNeuronArray==NULL)
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
@@ -261,7 +261,7 @@ NeuronErrorCode createNeuronArray(NeuronArray **myNeuronArray, int numberOfInput
 	//Create neuron array
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
-		(*myNeuronArray)->neuronArray = (Neuron**) malloc(sizeof(Neuron*)*numberOfNeurons);
+		(*myNeuronArray)->neuronArray = malloc(sizeof(Neuron*)*numberOfNeurons);
 
 		if ((*myNeuronArray)->neuronArray==NULL)
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;

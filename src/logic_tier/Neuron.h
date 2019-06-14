@@ -12,8 +12,6 @@
 #include <stdbool.h>
 #include <time.h>
 #include <limits.h>
-#include <pthread.h>
-#include <sys/types.h>
 
 #define NEURON_MINIMUM_NUMBER_OF_INPUTS 2
 #define NEURON_MINIMUM_NUMBER_OF_NEURONS 1
