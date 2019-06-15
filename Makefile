@@ -2,7 +2,7 @@ CC = gcc
 
 INCLUDES = -I/usr/include/glib-2.0 -I/usr/include/json-glib-1.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
 
-LD_FLAGS = -lglib-2.0 -ljson-glib-1.0 -lgio-2.0 -lgobject-2.0 -lpthread
+LD_FLAGS = -lglib-2.0 -ljson-glib-1.0 -lgio-2.0 -lgobject-2.0
 
 COMMON_CFLAGS = $(INCLUDES) -O3 -pedantic -pedantic-errors -Wall -Wextra -Werror
 SHARED_LIBRARY_CFLAGS = $(COMMON_CFLAGS) -fPIC -shared 
