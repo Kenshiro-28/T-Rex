@@ -54,7 +54,7 @@ Run this command to build a shared library in the current folder:
 $ make library=true
 ```
 
-# Cleaning
+## Cleaning
 
 Run this command to delete the generated files:
 
