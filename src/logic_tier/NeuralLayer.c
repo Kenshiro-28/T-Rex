@@ -290,25 +290,6 @@ NeuronErrorCode computeNeuralLayerOutput(NeuralLayer *myNeuralLayer, NeuronData 
 	if ((myNeuralLayer==NULL) || (inputArray==NULL) || (outputArray==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
 
-	//Check input array
-	if (returnValue==NEURON_RETURN_VALUE_OK)
-	{
-		float inputArrayLength = sizeof(inputArray) / (float) sizeof(NeuronData);
-
-		if (inputArrayLength!=myNeuralLayer->numberOfInputs)
-			returnValue = NEURON_NUMBER_OF_INPUTS_ERROR;
-	}
-
-	//Check output array
-	if (returnValue==NEURON_RETURN_VALUE_OK)
-	{
-		float outputArrayLength = sizeof(outputArray) / (float) sizeof(NeuronData);
-
-		if (outputArrayLength!=myNeuralLayer->numberOfNeurons)
-			returnValue = NEURON_NUMBER_OF_OUTPUTS_ERROR;
-	}
-
-	//Compute the output of the neurons
 	while ((neuronIndex < myNeuralLayer->numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
 	{
 		Neuron *myNeuron = myNeuralLayer->neuronArray[neuronIndex];

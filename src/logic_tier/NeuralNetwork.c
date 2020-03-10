@@ -20,57 +20,6 @@ typedef struct neuralNetwork
 	NeuronData *neuralNetworkOutputArray;
 } NeuralNetwork;
 
-
-static NeuralNetworkErrorCode computeNeuralLayerOutput(NeuralLayer *myNeuralLayer, NeuronData *inputArray, int numberOfInputs, NeuronData *outputArray)
-{
-	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
-
-	int numberOfNeurons;
-	int neuronIndex = 0;
-
-	NeuronErrorCode result = getNumberOfNeurons(myNeuralLayer, &numberOfNeurons);
-
-	if (result!=NEURON_RETURN_VALUE_OK)
-		returnValue = NEURAL_NETWORK_NEURON_ERROR;
-
-	while ((neuronIndex<numberOfNeurons) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
-	{
-		Neuron *myNeuron;
-
-		NeuronErrorCode result = getNeuron(myNeuralLayer, neuronIndex, &myNeuron);
-
-		if (result!=NEURON_RETURN_VALUE_OK)
-			returnValue = NEURAL_NETWORK_NEURON_ERROR;
-
-		int inputIndex=0;
-
-		//Set the input array as the neuron input
-		while ((inputIndex<numberOfInputs) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
-		{
-			result = setNeuronInput(myNeuron, inputIndex, inputArray[inputIndex]);
-
-			if (result!=NEURON_RETURN_VALUE_OK)
-				returnValue = NEURAL_NETWORK_NEURON_ERROR;
-
-			inputIndex++;
-		}
-
-		//Calculate neuron output
-		if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-		{
-			result = computeNeuronOutput(myNeuron, &(outputArray[neuronIndex]));
-
-			if (result!=NEURON_RETURN_VALUE_OK)
-				returnValue = NEURAL_NETWORK_NEURON_ERROR;
-		}
-
-		neuronIndex++;
-	}
-
-
-	return returnValue;
-}
-
 NeuralNetworkErrorCode createNeuralNetwork(NeuralNetwork **myNeuralNetwork, int numberOfInputs, int numberOfHiddenLayers, int numberOfOutputs)
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
@@ -144,7 +93,7 @@ NeuralNetworkErrorCode createNeuralNetwork(NeuralNetwork **myNeuralNetwork, int 
 	{
 		NeuralLayer **myHiddenLayer = &((*myNeuralNetwork)->hiddenLayerArray[i]);
 
-		result = createNeuronArray(myHiddenLayer, numberOfInputs, neuronsPerHiddenLayer);
+		result = createNeuralLayer(myHiddenLayer, numberOfInputs, neuronsPerHiddenLayer);
 
 		if (result!=NEURON_RETURN_VALUE_OK)
 			returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -157,7 +106,7 @@ NeuralNetworkErrorCode createNeuralNetwork(NeuralNetwork **myNeuralNetwork, int 
 	{
 		NeuralLayer **myOutputLayer = &((*myNeuralNetwork)->outputLayer);
 
-		result = createNeuronArray(myOutputLayer, numberOfInputs, numberOfOutputs);
+		result = createNeuralLayer(myOutputLayer, numberOfInputs, numberOfOutputs);
 
 		if (result!=NEURON_RETURN_VALUE_OK)
 			returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -196,7 +145,7 @@ NeuralNetworkErrorCode destroyNeuralNetwork(NeuralNetwork **myNeuralNetwork)
 		//Destroy hidden layers
 		while ((i<(*myNeuralNetwork)->numberOfHiddenLayers) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
 		{
-			NeuronErrorCode result = destroyNeuronArray(&((*myNeuralNetwork)->hiddenLayerArray[i]));
+			NeuronErrorCode result = destroyNeuralLayer(&((*myNeuralNetwork)->hiddenLayerArray[i]));
 
 			if (result!=NEURON_RETURN_VALUE_OK)
 				returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -211,7 +160,7 @@ NeuralNetworkErrorCode destroyNeuralNetwork(NeuralNetwork **myNeuralNetwork)
 		free((*myNeuralNetwork)->hiddenLayerArray);
 
 		//Destroy output layer
-		NeuronErrorCode result = destroyNeuronArray(&((*myNeuralNetwork)->outputLayer));
+		NeuronErrorCode result = destroyNeuralLayer(&((*myNeuralNetwork)->outputLayer));
 
 		if (result!=NEURON_RETURN_VALUE_OK)
 			returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -329,7 +278,7 @@ NeuralNetworkErrorCode computeNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork
 	//Feed hidden layers
 	while ((hiddenLayerIndex<myNeuralNetwork->numberOfHiddenLayers) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
 	{
-		returnValue = computeNeuralLayerOutput(myNeuralNetwork->hiddenLayerArray[hiddenLayerIndex], myNeuralNetwork->neuralLayerInputArray, neuronsPerHiddenLayer, myNeuralNetwork->neuralLayerOutputArray);
+		returnValue = computeNeuralLayerOutput(myNeuralNetwork->hiddenLayerArray[hiddenLayerIndex], myNeuralNetwork->neuralLayerInputArray, myNeuralNetwork->neuralLayerOutputArray);
 
 		//The hidden layer output is the input of the next layer
 		for (int i=0; i<neuronsPerHiddenLayer; i++)
@@ -340,7 +289,7 @@ NeuralNetworkErrorCode computeNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork
 
 	//Feed output layer
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-		returnValue = computeNeuralLayerOutput(myNeuralNetwork->outputLayer, myNeuralNetwork->neuralLayerInputArray, neuronsPerHiddenLayer, myNeuralNetwork->neuralNetworkOutputArray);
+		returnValue = computeNeuralLayerOutput(myNeuralNetwork->outputLayer, myNeuralNetwork->neuralLayerInputArray, myNeuralNetwork->neuralNetworkOutputArray);
 
 	//Get neural network output
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
@@ -397,7 +346,7 @@ NeuralNetworkErrorCode cloneNeuralNetwork(NeuralNetwork *myNeuralNetwork, Neural
 		NeuralLayer *myHiddenLayer = myNeuralNetwork->hiddenLayerArray[i];
 		NeuralLayer *myHiddenLayerClone = myNeuralNetworkClone->hiddenLayerArray[i];
 
-		result = cloneNeuronArray(myHiddenLayer, myHiddenLayerClone);
+		result = cloneNeuralLayer(myHiddenLayer, myHiddenLayerClone);
 
 		if (result!=NEURON_RETURN_VALUE_OK)
 			returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -408,7 +357,7 @@ NeuralNetworkErrorCode cloneNeuralNetwork(NeuralNetwork *myNeuralNetwork, Neural
 	//Clone output layer
 	if (returnValue == NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
-		result = cloneNeuronArray(myNeuralNetwork->outputLayer, myNeuralNetworkClone->outputLayer);
+		result = cloneNeuralLayer(myNeuralNetwork->outputLayer, myNeuralNetworkClone->outputLayer);
 
 		if (result!=NEURON_RETURN_VALUE_OK)
 			returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -443,7 +392,7 @@ NeuralNetworkErrorCode mutateNeuralNetwork(NeuralNetwork *myNeuralNetwork)
 			//Mutate hidden layers
 			while ((i<numberOfHiddenLayers) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
 			{
-				result = mutateNeuronArray(myNeuralNetwork->hiddenLayerArray[i], isMassiveMutation);
+				result = mutateNeuralLayer(myNeuralNetwork->hiddenLayerArray[i], isMassiveMutation);
 
 				if (result!=NEURON_RETURN_VALUE_OK)
 					returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -454,7 +403,7 @@ NeuralNetworkErrorCode mutateNeuralNetwork(NeuralNetwork *myNeuralNetwork)
 			//Mutate output layer
 			if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 			{
-				result = mutateNeuronArray(myNeuralNetwork->outputLayer, isMassiveMutation);
+				result = mutateNeuralLayer(myNeuralNetwork->outputLayer, isMassiveMutation);
 
 				if (result!=NEURON_RETURN_VALUE_OK)
 					returnValue = NEURAL_NETWORK_NEURON_ERROR;
@@ -467,9 +416,9 @@ NeuralNetworkErrorCode mutateNeuralNetwork(NeuralNetwork *myNeuralNetwork)
 			int mutantNeuronLayer = rand() % numberOfNeuralLayers;
 
 			if (mutantNeuronLayer<numberOfHiddenLayers)
-				result = mutateNeuronArray(myNeuralNetwork->hiddenLayerArray[mutantNeuronLayer], isMassiveMutation);
+				result = mutateNeuralLayer(myNeuralNetwork->hiddenLayerArray[mutantNeuronLayer], isMassiveMutation);
 			else
-				result = mutateNeuronArray(myNeuralNetwork->outputLayer, isMassiveMutation);
+				result = mutateNeuralLayer(myNeuralNetwork->outputLayer, isMassiveMutation);
 
 			if (result!=NEURON_RETURN_VALUE_OK)
 				returnValue = NEURAL_NETWORK_NEURON_ERROR;
