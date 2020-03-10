@@ -1,7 +1,7 @@
 /*
- * Neuron.c
+ * NeuralLayer.c
  *
- *  Created on: Sep 9, 2017
+ *  Created on: Mar 10, 2020
  *      Author: kenshiro
  */
 
@@ -256,15 +256,12 @@ NeuronErrorCode destroyNeuralLayer(NeuralLayer **myNeuralLayer)
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
 	int i=0;
-	int numberOfNeurons;
 
 	if ((myNeuralLayer==NULL) || (*myNeuralLayer==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
-	else
-		numberOfNeurons = (*myNeuralLayer)->numberOfNeurons;
 
 	//Destroy neurons
-	while ((i<numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
+	while ((i < (*myNeuralLayer)->numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
 	{
 		Neuron *myNeuron = (*myNeuralLayer)->neuronArray[i];
 		returnValue = destroyNeuron(&myNeuron);
@@ -294,8 +291,7 @@ NeuronErrorCode computeNeuralLayerOutput(NeuralLayer *myNeuralLayer, NeuronData 
 	{
 		Neuron *myNeuron = myNeuralLayer->neuronArray[neuronIndex];
 
-		if (returnValue==NEURON_RETURN_VALUE_OK)
-			returnValue = computeNeuronOutput(myNeuron, inputArray, &(outputArray[neuronIndex]));
+		returnValue = computeNeuronOutput(myNeuron, inputArray, &(outputArray[neuronIndex]));
 
 		neuronIndex++;
 	}
@@ -323,7 +319,7 @@ NeuronErrorCode getNeuron(NeuralLayer *myNeuralLayer, int neuronNumber, Neuron *
 	if ((myNeuralLayer==NULL) || (myNeuron==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
 	else if ((neuronNumber<0) || (neuronNumber>=myNeuralLayer->numberOfNeurons))
-		returnValue = NEURON_NUMBER_OF_NEURONS_ERROR ;
+		returnValue = NEURON_NUMBER_OF_NEURONS_ERROR;
 
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 		*myNeuron = myNeuralLayer->neuronArray[neuronNumber];
@@ -347,8 +343,7 @@ NeuronErrorCode cloneNeuralLayer(NeuralLayer *myNeuralLayer, NeuralLayer *myNeur
 		Neuron *myNeuron = myNeuralLayer->neuronArray[i];
 		Neuron *myNeuronClone = myNeuralLayerClone->neuronArray[i];
 
-		if (returnValue==NEURON_RETURN_VALUE_OK)
-			returnValue = cloneNeuron(myNeuron, myNeuronClone);
+		returnValue = cloneNeuron(myNeuron, myNeuronClone);
 
 		i++;
 	}

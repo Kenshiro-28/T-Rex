@@ -1,7 +1,7 @@
 /*
- * Neuron.h
+ * NeuralLayer.h
  *
- *  Created on: Sep 9, 2017
+ *  Created on: Mar 10, 2020
  *      Author: kenshiro
  */
 
