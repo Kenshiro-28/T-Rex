@@ -194,7 +194,7 @@ NeuronErrorCode computeNeuronOutput(Neuron *myNeuron, NeuronData *inputArray, Ne
 	return returnValue;
 }
 
-//Neuron array operations
+//Neural layer operations
 
 NeuronErrorCode createNeuralLayer(NeuralLayer **myNeuralLayer, int numberOfInputs, int numberOfNeurons)
 {
