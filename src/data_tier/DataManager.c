@@ -263,7 +263,7 @@ NeuralNetworkErrorCode loadNeuralNetwork(char *filePath, NeuralNetwork **myNeura
 	//Read json string
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
-		char* result = fgets(myJsonString, NEURAL_NETWORK_JSON_MAX_LENGTH - 1, myFile);
+		char* result = fgets(myJsonString, NEURAL_NETWORK_JSON_MAX_LENGTH, myFile);
 
 		if (result==NULL)
 			returnValue = NEURAL_NETWORK_FILE_LOAD_ERROR;
