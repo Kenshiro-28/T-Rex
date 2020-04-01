@@ -43,6 +43,10 @@ typedef struct neuron Neuron;
 typedef struct neuralLayer NeuralLayer;
 
 //Neuron operations
+NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs);
+NeuronErrorCode destroyNeuron(Neuron **myNeuron);
+NeuronErrorCode cloneNeuron(Neuron *myNeuron, Neuron *myNeuronClone);
+NeuronErrorCode mutateNeuron(Neuron *myNeuron);
 NeuronErrorCode getNumberOfInputs(Neuron *myNeuron, int *numberOfInputs);
 NeuronErrorCode getNeuronWeight(Neuron *myNeuron, int inputNumber, NeuronWeight *inputWeight);
 NeuronErrorCode setNeuronWeight(Neuron *myNeuron, int inputNumber, NeuronWeight inputWeight);

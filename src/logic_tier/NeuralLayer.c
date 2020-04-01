@@ -22,7 +22,7 @@ typedef struct neuralLayer
 
 //Neuron operations
 
-static NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs)
+NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 	
@@ -69,7 +69,7 @@ static NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs)
 	return returnValue;
 }
 
-static NeuronErrorCode destroyNeuron(Neuron **myNeuron)
+NeuronErrorCode destroyNeuron(Neuron **myNeuron)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
@@ -86,7 +86,7 @@ static NeuronErrorCode destroyNeuron(Neuron **myNeuron)
 	return returnValue;
 }
 
-static NeuronErrorCode cloneNeuron(Neuron *myNeuron, Neuron *myNeuronClone)
+NeuronErrorCode cloneNeuron(Neuron *myNeuron, Neuron *myNeuronClone)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
@@ -102,7 +102,7 @@ static NeuronErrorCode cloneNeuron(Neuron *myNeuron, Neuron *myNeuronClone)
 	return returnValue;
 }
 
-static NeuronErrorCode mutateNeuron(Neuron *myNeuron)
+NeuronErrorCode mutateNeuron(Neuron *myNeuron)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
