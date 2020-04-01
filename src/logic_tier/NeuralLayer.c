@@ -261,7 +261,7 @@ NeuronErrorCode destroyNeuralLayer(NeuralLayer **myNeuralLayer)
 		returnValue = NEURON_NULL_POINTER_ERROR;
 
 	//Destroy neurons
-	while ((i < (*myNeuralLayer)->numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
+	while ((returnValue==NEURON_RETURN_VALUE_OK) && (i < (*myNeuralLayer)->numberOfNeurons))
 	{
 		Neuron *myNeuron = (*myNeuralLayer)->neuronArray[i];
 		returnValue = destroyNeuron(&myNeuron);
@@ -287,7 +287,7 @@ NeuronErrorCode computeNeuralLayerOutput(NeuralLayer *myNeuralLayer, NeuronData 
 	if ((myNeuralLayer==NULL) || (inputArray==NULL) || (outputArray==NULL))
 		returnValue = NEURON_NULL_POINTER_ERROR;
 
-	while ((neuronIndex < myNeuralLayer->numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
+	while ((returnValue==NEURON_RETURN_VALUE_OK) && (neuronIndex < myNeuralLayer->numberOfNeurons))
 	{
 		Neuron *myNeuron = myNeuralLayer->neuronArray[neuronIndex];
 
@@ -338,7 +338,7 @@ NeuronErrorCode cloneNeuralLayer(NeuralLayer *myNeuralLayer, NeuralLayer *myNeur
 	else if (myNeuralLayer->numberOfNeurons!=myNeuralLayerClone->numberOfNeurons)
 		returnValue = NEURON_DIFFERENT_NEURAL_LAYERS_ERROR;
 
-	while ((i < myNeuralLayer->numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
+	while ((returnValue==NEURON_RETURN_VALUE_OK) && (i < myNeuralLayer->numberOfNeurons))
 	{
 		Neuron *myNeuron = myNeuralLayer->neuronArray[i];
 		Neuron *myNeuronClone = myNeuralLayerClone->neuronArray[i];
