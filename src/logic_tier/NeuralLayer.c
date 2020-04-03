@@ -96,8 +96,9 @@ NeuronErrorCode cloneNeuron(Neuron *myNeuron, Neuron *myNeuronClone)
 		returnValue = NEURON_DIFFERENT_NEURONS_ERROR;
 
 	//Copy weights
-	for (int i=0; i < myNeuron->numberOfWeights; i++)
-		myNeuronClone->weightArray[i] = myNeuron->weightArray[i];
+	if (returnValue==NEURON_RETURN_VALUE_OK)
+		for (int i=0; i < myNeuron->numberOfWeights; i++)
+			myNeuronClone->weightArray[i] = myNeuron->weightArray[i];
 
 	return returnValue;
 }
@@ -230,7 +231,7 @@ NeuronErrorCode createNeuralLayer(NeuralLayer **myNeuralLayer, int numberOfInput
 	}
 
 	//Create neurons
-	while ((i<numberOfNeurons) && (returnValue==NEURON_RETURN_VALUE_OK))
+	while ((returnValue==NEURON_RETURN_VALUE_OK) && (i<numberOfNeurons))
 	{
 		Neuron *myNeuron;
 
