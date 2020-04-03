@@ -212,7 +212,7 @@ NeuronErrorCode createNeuralLayer(NeuralLayer **myNeuralLayer, int numberOfInput
 	if ((numberOfNeurons<NEURAL_LAYER_MINIMUM_NUMBER_OF_NEURONS) || (numberOfNeurons>INT_MAX))
 		returnValue = NEURON_NUMBER_OF_NEURONS_ERROR;
 
-	//Create neuron array structure
+	//Create neural layer structure
 	if (returnValue==NEURON_RETURN_VALUE_OK)
 	{
 		*myNeuralLayer = malloc(sizeof(NeuralLayer));
