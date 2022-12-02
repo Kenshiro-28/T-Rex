@@ -263,7 +263,6 @@ NeuralNetworkErrorCode computeNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork
 	NeuronData *auxNeuralNetwork;
 
 	int hiddenLayerIndex=0;
-	int neuronsPerHiddenLayer;
 	
 	NeuronErrorCode result;
 
@@ -273,10 +272,9 @@ NeuralNetworkErrorCode computeNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork
 	//The first hidden layer input is the input layer
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
 	{
-		neuronsPerHiddenLayer = myNeuralNetwork->numberOfInputs;
-
-		for (int i=0; i<neuronsPerHiddenLayer; i++)
-			myNeuralNetwork->neuralLayerInputArray[i] = myNeuralNetwork->inputLayer[i];
+		int size = sizeof(NeuronData) * myNeuralNetwork->numberOfInputs;
+	
+		memcpy(myNeuralNetwork->neuralLayerInputArray, myNeuralNetwork->inputLayer, size);
 	}
 
 	//Feed hidden layers

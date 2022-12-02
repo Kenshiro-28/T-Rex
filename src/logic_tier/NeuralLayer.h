@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <time.h>
 #include <limits.h>
+#include <string.h>
 
 #define NEURAL_LAYER_MINIMUM_NUMBER_OF_INPUTS 2
 #define NEURAL_LAYER_MINIMUM_NUMBER_OF_NEURONS 1
