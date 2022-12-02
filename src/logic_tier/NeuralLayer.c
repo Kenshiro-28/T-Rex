@@ -97,8 +97,11 @@ NeuronErrorCode cloneNeuron(Neuron *myNeuron, Neuron *myNeuronClone)
 
 	//Copy weights
 	if (returnValue==NEURON_RETURN_VALUE_OK)
-		for (int i=0; i < myNeuron->numberOfWeights; i++)
-			myNeuronClone->weightArray[i] = myNeuron->weightArray[i];
+	{
+		int size = sizeof(NeuronWeight) * myNeuron->numberOfWeights;
+		
+		memcpy(myNeuronClone->weightArray, myNeuron->weightArray, size);
+	}
 
 	return returnValue;
 }
