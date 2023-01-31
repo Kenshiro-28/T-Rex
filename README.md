@@ -24,7 +24,7 @@ T-Rex uses the GNOME JSON-Glib library to load trained neural networks from json
 
 https://wiki.gnome.org/Projects/JsonGlib
 
-To install JSON-Glib in Ubuntu, open a system console and run this command:
+To install JSON-Glib in Debian, open a system console and run this command:
 
 ```
 $ sudo apt install libjson-glib-dev
@@ -53,6 +53,8 @@ Run this command to build a shared library in the current folder:
 ```
 $ make library=true
 ```
+
+T-Rex is compiled with **-fshort-enums** by default. If there are negative values the enum type is the first of *char*, *short* and *int* that can represent all the values, otherwise it is the first of *unsigned char*, *unsigned short* and *unsigned int* that can represent all the values.
 
 ## Cleaning
 
