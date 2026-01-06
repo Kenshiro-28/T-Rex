@@ -37,7 +37,7 @@ NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs)
 	{
 		*myNeuron = malloc(sizeof(Neuron));
 
-		if (myNeuron==NULL)
+		if (*myNeuron==NULL)
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
 	}
 
@@ -47,7 +47,11 @@ NeuronErrorCode createNeuron(Neuron **myNeuron, int numberOfInputs)
 		(*myNeuron)->weightArray = malloc(sizeof(NeuronWeight) * numberOfInputs);
 
 		if ((*myNeuron)->weightArray==NULL)
+		{
+            free(*myNeuron);
+            *myNeuron = NULL;
 			returnValue = NEURON_MEMORY_ALLOCATION_ERROR;
+	    }
 	}
 
 	//Initialize

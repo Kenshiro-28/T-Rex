@@ -11,7 +11,7 @@ NeuralNetworkErrorCode printNeuralNetwork(NeuralNetwork *myNeuralNetwork)
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	int numberOfHiddenLayers;
+	int numberOfHiddenLayers=0;
 	int hiddenLayerIndex=0;
 
 	if (myNeuralNetwork==NULL)
@@ -109,7 +109,7 @@ NeuronErrorCode printNeuralLayer(NeuralLayer *myNeuralLayer)
 {
 	NeuronErrorCode returnValue = NEURON_RETURN_VALUE_OK;
 
-	int numberOfNeurons;
+	int numberOfNeurons=0;
 	int i=0;
 
 	if (myNeuralLayer==NULL)

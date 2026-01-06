@@ -11,6 +11,6 @@
 #include "../logic_tier/NeuralNetwork.h"
 #include "../presentation_tier/ConsoleManager.h"
 
-NeuralNetworkErrorCode runTicTacToe();
+NeuralNetworkErrorCode runTicTacToe(void);
 
 #endif /* EXAMPLES_TICTACTOE_H_ */

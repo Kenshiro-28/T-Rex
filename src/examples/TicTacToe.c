@@ -370,7 +370,7 @@ static void computeClassicAIoutput(GameBoard *myGameBoard)
 		printf("\nCLASSIC AI WAS UNABLE TO FIND A MOVEMENT\n");
 }
 
-static void printNewGameMessage()
+static void printNewGameMessage(void)
 {
 	printf("\n---------- NEW GAME ----------\n");
 	printf("-                            -\n");
@@ -385,8 +385,8 @@ static NeuralNetworkErrorCode playGameAgainstClassicAI(NeuralNetwork *myNeuralNe
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
 	//Neural network output
-	NeuronData *neuralNetworkOutput;
-	int numberOfOutputs;
+	NeuronData *neuralNetworkOutput = NULL;
+	int numberOfOutputs = 0;
 
 	if ((myNeuralNetwork==NULL) || (myGameBoard==NULL))
 	{
@@ -455,9 +455,9 @@ static NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	NeuralNetwork *myNeuralNetworkClone;
+	NeuralNetwork *myNeuralNetworkClone = NULL;
 
-	GameBoard myGameBoard;
+	GameBoard myGameBoard = {0};
 
 	bool trainingCompleted = false;
 	int generationNumber = 0;
@@ -510,7 +510,7 @@ static NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork
 	return returnValue;
 }
 
-NeuralNetworkErrorCode runTicTacToe()
+NeuralNetworkErrorCode runTicTacToe(void)
 {
 	printf("\n----- TIC-TAC-TOE -----\n");
 

@@ -1,0 +1,21 @@
+---
+Checks: >
+  -*,
+  bugprone-*,
+  clang-analyzer-*,
+  performance-*,
+  portability-*,
+  cert-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-multi-level-implicit-pointer-conversion,
+  -bugprone-signed-char-misuse,
+  -cert-msc30-c,
+  -cert-msc32-c,
+  -cert-msc50-cpp,
+  -cert-msc51-cpp,
+  -cert-str34-c,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+
+HeaderFilterRegex: '^src/.*'
+

@@ -151,7 +151,7 @@ static NeuralNetworkErrorCode printNeuralNetworkResults(NeuralNetwork *myNeuralN
 	return returnValue;
 }
 
-NeuralNetworkErrorCode runXorExample()
+NeuralNetworkErrorCode runXorExample(void)
 {
 	printf("\n----- XOR EXAMPLE -----\n");
 

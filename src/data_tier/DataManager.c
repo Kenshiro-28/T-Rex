@@ -153,24 +153,26 @@ static NeuralNetworkErrorCode saveFile(char *filePath, JsonBuilder *myJsonBuilde
 			returnValue = NEURAL_NETWORK_FILE_SAVE_ERROR;
 	}
 
-	//Close file
-	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
-		int result = fclose(myFile);
+    //Close file
+    if (myFile != NULL)
+    {
+        int result = fclose(myFile);
 
-		if (result==EOF)
-			returnValue = NEURAL_NETWORK_FILE_SAVE_ERROR;
-	}
+        if ((result == EOF) && (returnValue == NEURAL_NETWORK_RETURN_VALUE_OK))
+            returnValue = NEURAL_NETWORK_FILE_SAVE_ERROR;
+    }
 
-	//Free memory
-	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
-		json_node_free(myRootNode);
-		g_object_unref(myJsonGenerator);
-		g_free(myJsonString);
-	}
+    //Free memory
+    if (myRootNode != NULL)
+        json_node_free(myRootNode);
 
-	return returnValue;
+    if (myJsonGenerator != NULL)
+        g_object_unref(myJsonGenerator);
+
+    if (myJsonString != NULL)
+        g_free(myJsonString);
+
+    return returnValue;
 }
 
 static NeuralNetworkErrorCode setNeuronWeights(Neuron *myNeuron, int numberOfInputs, JsonReader *myJsonReader)
@@ -227,9 +229,9 @@ NeuralNetworkErrorCode loadNeuralNetwork(char *filePath, NeuralNetwork **myNeura
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	FILE *myFile;
+	FILE *myFile = NULL;
 
-	gchar *myJsonString;
+	gchar *myJsonString = NULL;
 
 	JsonParser *myJsonParser = NULL;
 	JsonReader *myJsonReader = NULL;
@@ -347,24 +349,25 @@ NeuralNetworkErrorCode loadNeuralNetwork(char *filePath, NeuralNetwork **myNeura
 		}
 	}
 
-	//Close file
-	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
-		int result = fclose(myFile);
+    //Close file
+    if (myFile != NULL)
+    {
+        int result = fclose(myFile);
 
-		if (result==EOF)
-			returnValue = NEURAL_NETWORK_FILE_LOAD_ERROR;
-	}
+        if ((result == EOF) && (returnValue == NEURAL_NETWORK_RETURN_VALUE_OK))
+            returnValue = NEURAL_NETWORK_FILE_LOAD_ERROR;
+    }
 
-	//Free memory
-	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
-	{
-		free(myJsonString);
-		g_object_unref(myJsonReader);
-	    g_object_unref(myJsonParser);
-	}
+    //Free memory
+    free(myJsonString);
 
-	return returnValue;
+    if (myJsonReader != NULL)
+        g_object_unref(myJsonReader);
+
+    if (myJsonParser != NULL)
+        g_object_unref(myJsonParser);
+
+    return returnValue;
 }
 
 NeuralNetworkErrorCode saveNeuralNetwork(char *filePath, NeuralNetwork *myNeuralNetwork)

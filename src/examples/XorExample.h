@@ -12,6 +12,6 @@
 #include "../presentation_tier/ConsoleManager.h"
 #include "../data_tier/DataManager.h"
 
-NeuralNetworkErrorCode runXorExample();
+NeuralNetworkErrorCode runXorExample(void);
 
 #endif /* EXAMPLES_XOREXAMPLE_H_ */

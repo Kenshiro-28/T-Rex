@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-and-tidy:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libglib2.0-dev \
+            libjson-glib-dev \
+            bear \
+            clang-tidy \
+            clang-tools
+
+      - name: Clean
+        run: make clean
+
+      - name: Build and generate compilation database
+        run: bear -- make -j"$(nproc)"
+
+      - name: Run clang-tidy
+        run: run-clang-tidy -p . -j"$(nproc)" -quiet -header-filter='^src/'
+

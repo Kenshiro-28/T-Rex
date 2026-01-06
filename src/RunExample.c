@@ -2,7 +2,7 @@
  ============================================================================
  Name        : T-Rex
  Author      : Kenshiro
- Version     : 3.04
+ Version     : 3.05
  Copyright   : GNU General Public License (GPLv3)
  Description : T-Rex is an evolutionary neural network
  ============================================================================
@@ -21,7 +21,8 @@ typedef enum
 	EXAMPLE_EIGHT_QUEENS_PUZZLE
 } Example;
 
-int main()
+
+int main(void)
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
@@ -38,6 +39,9 @@ int main()
 		case EXAMPLE_EIGHT_QUEENS_PUZZLE:
 			returnValue = runEightQueensPuzzle();
 			break;
+
+	    default:
+	        break;
 	}
 
 	if (returnValue!=NEURAL_NETWORK_RETURN_VALUE_OK)

@@ -12,6 +12,6 @@
 #include "../presentation_tier/ConsoleManager.h"
 #include "../data_tier/DataManager.h"
 
-NeuralNetworkErrorCode runEightQueensPuzzle();
+NeuralNetworkErrorCode runEightQueensPuzzle(void);
 
 #endif /* EXAMPLES_EIGHTQUEENSPUZZLE_H_ */

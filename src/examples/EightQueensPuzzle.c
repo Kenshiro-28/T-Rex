@@ -30,7 +30,8 @@
 typedef enum
 {
 	SQUARE_QUEEN_MARK = 'Q',
-	SQUARE_EMPTY = ' '
+	SQUARE_EMPTY = ' ',
+    SQUARE_UNINITIALIZED = 0
 } Square;
 
 //The game score is the number of queens not threatened
@@ -161,8 +162,8 @@ static NeuralNetworkErrorCode playEightQueensPuzzle(NeuralNetwork *myNeuralNetwo
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
 	//Neural network output
-	NeuronData *neuralNetworkOutput;
-	int numberOfOutputs;
+	NeuronData *neuralNetworkOutput = NULL;
+	int numberOfOutputs = 0;
 
 	if ((myNeuralNetwork==NULL) || (myGameBoard==NULL))
 		returnValue = NEURAL_NETWORK_NULL_POINTER_ERROR;
@@ -191,9 +192,9 @@ static NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork
 {
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
-	NeuralNetwork *myNeuralNetworkClone;
+	NeuralNetwork *myNeuralNetworkClone = NULL;
 
-	GameBoard myGameBoard;
+	GameBoard myGameBoard = {0};
 
 	bool trainingCompleted = false;
 	int generationNumber = 0;
@@ -266,7 +267,7 @@ static NeuralNetworkErrorCode trainNeuralNetwork(NeuralNetwork **myNeuralNetwork
 	return returnValue;
 }
 
-NeuralNetworkErrorCode runEightQueensPuzzle()
+NeuralNetworkErrorCode runEightQueensPuzzle(void)
 {
 	printf("\n----- EIGHT QUEENS PUZZLE -----\n\n");
 

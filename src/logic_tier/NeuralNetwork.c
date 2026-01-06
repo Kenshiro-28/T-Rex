@@ -54,7 +54,7 @@ NeuralNetworkErrorCode createNeuralNetwork(NeuralNetwork **myNeuralNetwork, int 
 	{
 		*myNeuralNetwork = malloc(sizeof(NeuralNetwork));
 
-		if (myNeuralNetwork==NULL)
+		if (*myNeuralNetwork==NULL)
 			returnValue = NEURAL_NETWORK_MEMORY_ALLOCATION_ERROR;
 	}
 
@@ -214,8 +214,7 @@ NeuralNetworkErrorCode getHiddenLayer(NeuralNetwork *myNeuralNetwork, int hidden
 
 	if ((myNeuralNetwork==NULL) || (myHiddenLayer==NULL))
 		returnValue = NEURAL_NETWORK_NULL_POINTER_ERROR;
-
-	if ((hiddenLayerNumber<0) || (hiddenLayerNumber>=myNeuralNetwork->numberOfHiddenLayers))
+    else if ((hiddenLayerNumber<0) || (hiddenLayerNumber>=myNeuralNetwork->numberOfHiddenLayers))
 		returnValue = NEURAL_NETWORK_NUMBER_OF_HIDDEN_LAYERS_ERROR;
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
@@ -246,8 +245,7 @@ NeuralNetworkErrorCode setNeuralNetworkInput(NeuralNetwork *myNeuralNetwork, int
 
 	if (myNeuralNetwork==NULL)
 		returnValue = NEURAL_NETWORK_NULL_POINTER_ERROR;
-
-	if ((inputNumber<0) || (inputNumber>=myNeuralNetwork->numberOfInputs))
+    else if ((inputNumber<0) || (inputNumber>=myNeuralNetwork->numberOfInputs))
 		returnValue = NEURAL_NETWORK_NUMBER_OF_INPUTS_ERROR;
 
 	if (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK)
@@ -278,7 +276,7 @@ NeuralNetworkErrorCode computeNeuralNetworkOutput(NeuralNetwork *myNeuralNetwork
 	}
 
 	//Feed hidden layers
-	while ((hiddenLayerIndex<myNeuralNetwork->numberOfHiddenLayers) && (returnValue==NEURAL_NETWORK_RETURN_VALUE_OK))
+	while ((returnValue==NEURAL_NETWORK_RETURN_VALUE_OK) && (hiddenLayerIndex<myNeuralNetwork->numberOfHiddenLayers))
 	{
 		result = computeNeuralLayerOutput(myNeuralNetwork->hiddenLayerArray[hiddenLayerIndex], myNeuralNetwork->neuralLayerInputArray, myNeuralNetwork->neuralLayerOutputArray);
 
@@ -333,7 +331,7 @@ NeuralNetworkErrorCode cloneNeuralNetwork(NeuralNetwork *myNeuralNetwork, Neural
 	NeuralNetworkErrorCode returnValue = NEURAL_NETWORK_RETURN_VALUE_OK;
 
 	int i=0;
-	int numberOfHiddenLayers;
+	int numberOfHiddenLayers=0;
 	NeuronErrorCode result;
 
 	if ((myNeuralNetwork==NULL) || (myNeuralNetworkClone==NULL))
